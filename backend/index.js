@@ -54,6 +54,14 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({
+    status: "online",
+    message: "Finvest Growth Backend API is running successfully!",
+    database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
+
 app.use("/", authRoute);
 
 app.get("/allHoldings", async (req, res) => {
