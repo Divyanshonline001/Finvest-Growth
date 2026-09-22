@@ -1,0 +1,9 @@
+@import "./BuyActionWindow.css";
+
+.btn-orange {
+  background: #ff5722;
+}
+
+.btn-orange:hover {
+  background: #ff784e;
+}
