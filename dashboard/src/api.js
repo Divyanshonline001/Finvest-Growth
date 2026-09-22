@@ -5,7 +5,7 @@ const resolveApiUrl = () => {
     return process.env.REACT_APP_API_URL;
   }
   if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
-    return `https://${window.location.hostname.replace("dashboard", "backend")}`;
+    return "https://finvest-backend-pnj0.onrender.com";
   }
   return process.env.REACT_APP_API_URL || "http://localhost:4000";
 };

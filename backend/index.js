@@ -28,6 +28,8 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:3002",
+  "https://finvest-frontend.onrender.com",
+  "https://finvest-dashboard.onrender.com",
   process.env.FRONTEND_URL,
   process.env.DASHBOARD_URL,
 ].filter(Boolean);

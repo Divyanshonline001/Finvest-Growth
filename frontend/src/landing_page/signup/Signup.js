@@ -32,7 +32,7 @@ const Signup = () => {
       return process.env.REACT_APP_API_URL;
     }
     if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
-      return `https://${window.location.hostname.replace("frontend", "backend")}`;
+      return "https://finvest-backend-pnj0.onrender.com";
     }
     return process.env.REACT_APP_API_URL || "http://localhost:4000";
   };
@@ -42,7 +42,7 @@ const Signup = () => {
       return process.env.REACT_APP_DASHBOARD_URL;
     }
     if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
-      return `https://${window.location.hostname.replace("frontend", "dashboard")}`;
+      return "https://finvest-dashboard.onrender.com";
     }
     return process.env.REACT_APP_DASHBOARD_URL || "http://localhost:3001";
   };
