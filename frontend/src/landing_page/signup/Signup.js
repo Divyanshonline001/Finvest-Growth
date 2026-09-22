@@ -28,21 +28,21 @@ const Signup = () => {
     });
 
   const getApiUrl = () => {
-    if (process.env.REACT_APP_API_URL && !process.env.REACT_APP_API_URL.includes("localhost")) {
-      return process.env.REACT_APP_API_URL;
-    }
     if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
       return "https://finvest-backend-pnj0.onrender.com";
+    }
+    if (process.env.REACT_APP_API_URL && !process.env.REACT_APP_API_URL.includes("localhost") && !process.env.REACT_APP_API_URL.includes("finvest-backend.onrender.com")) {
+      return process.env.REACT_APP_API_URL;
     }
     return process.env.REACT_APP_API_URL || "http://localhost:4000";
   };
 
   const getDashboardUrl = () => {
-    if (process.env.REACT_APP_DASHBOARD_URL && !process.env.REACT_APP_DASHBOARD_URL.includes("localhost")) {
-      return process.env.REACT_APP_DASHBOARD_URL;
-    }
     if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
       return "https://finvest-dashboard.onrender.com";
+    }
+    if (process.env.REACT_APP_DASHBOARD_URL && !process.env.REACT_APP_DASHBOARD_URL.includes("localhost")) {
+      return process.env.REACT_APP_DASHBOARD_URL;
     }
     return process.env.REACT_APP_DASHBOARD_URL || "http://localhost:3001";
   };
