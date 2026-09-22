@@ -9,6 +9,13 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const queryToken = params.get("token");
+    if (queryToken) {
+      localStorage.setItem("token", queryToken);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     const verifyUser = async () => {
       try {
         const { data } = await api.post(

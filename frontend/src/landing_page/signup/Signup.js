@@ -27,14 +27,34 @@ const Signup = () => {
       position: "bottom-right",
     });
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
-  const DASHBOARD_URL = process.env.REACT_APP_DASHBOARD_URL || "http://localhost:3001";
+  const getApiUrl = () => {
+    if (process.env.REACT_APP_API_URL && !process.env.REACT_APP_API_URL.includes("localhost")) {
+      return process.env.REACT_APP_API_URL;
+    }
+    if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
+      return `https://${window.location.hostname.replace("frontend", "backend")}`;
+    }
+    return process.env.REACT_APP_API_URL || "http://localhost:4000";
+  };
+
+  const getDashboardUrl = () => {
+    if (process.env.REACT_APP_DASHBOARD_URL && !process.env.REACT_APP_DASHBOARD_URL.includes("localhost")) {
+      return process.env.REACT_APP_DASHBOARD_URL;
+    }
+    if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
+      return `https://${window.location.hostname.replace("frontend", "dashboard")}`;
+    }
+    return process.env.REACT_APP_DASHBOARD_URL || "http://localhost:3001";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const apiUrl = getApiUrl();
+    const dashboardUrl = getDashboardUrl();
+
     try {
       const { data } = await axios.post(
-        `${API_URL}/signup`,
+        `${apiUrl}/signup`,
         {
           ...inputValue,
         },
@@ -45,15 +65,25 @@ const Signup = () => {
         if (token) {
           localStorage.setItem("token", token);
         }
-        handleSuccess(message);
+        handleSuccess(message || "Signed up successfully!");
         setTimeout(() => {
-          window.location.href = DASHBOARD_URL;
-        }, 1000);
+          try {
+            const redirectUrl = new URL(dashboardUrl);
+            if (token) {
+              redirectUrl.searchParams.set("token", token);
+            }
+            window.location.href = redirectUrl.toString();
+          } catch {
+            window.location.href = token ? `${dashboardUrl}?token=${token}` : dashboardUrl;
+          }
+        }, 800);
       } else {
-        handleError(message);
+        handleError(message || "Signup failed. Please try again.");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Signup network/server error:", error);
+      const errMsg = error.response?.data?.message || error.message || "Unable to reach server. Please check your connection.";
+      handleError(errMsg);
     }
     setInputValue({
       ...inputValue,

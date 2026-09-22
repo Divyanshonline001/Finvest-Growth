@@ -1,6 +1,16 @@
 import axios from "axios";
 
-export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+const resolveApiUrl = () => {
+  if (process.env.REACT_APP_API_URL && !process.env.REACT_APP_API_URL.includes("localhost")) {
+    return process.env.REACT_APP_API_URL;
+  }
+  if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
+    return `https://${window.location.hostname.replace("dashboard", "backend")}`;
+  }
+  return process.env.REACT_APP_API_URL || "http://localhost:4000";
+};
+
+export const API_URL = resolveApiUrl();
 
 const api = axios.create({
   baseURL: API_URL,

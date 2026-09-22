@@ -2,7 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
 
-const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
+const resolveFrontendUrl = () => {
+  if (process.env.REACT_APP_FRONTEND_URL && !process.env.REACT_APP_FRONTEND_URL.includes("localhost")) {
+    return process.env.REACT_APP_FRONTEND_URL;
+  }
+  if (typeof window !== "undefined" && window.location.hostname.includes("onrender.com")) {
+    return `https://${window.location.hostname.replace("dashboard", "frontend")}`;
+  }
+  return process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
+};
+
+const FRONTEND_URL = resolveFrontendUrl();
 
 const Menu = ({ username }) => {
   const [selectedMenu, setSelectedMenu] = useState(0);
