@@ -23,11 +23,9 @@ services:
         sync: false
 
   # 2. Frontend Landing Page (Static Site)
-  - type: web
+  - type: static
     name: finvest-frontend
     runtime: static
-    plan: free
-    region: oregon
     rootDir: frontend
     buildCommand: CI=false npm install && CI=false npm run build
     staticPublishPath: build
@@ -37,22 +35,14 @@ services:
         destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: finvest-backend
-          property: host
+        sync: false
       - key: REACT_APP_DASHBOARD_URL
-        fromService:
-          type: web
-          name: finvest-dashboard
-          property: host
+        sync: false
 
   # 3. Trading Dashboard (Static Site)
-  - type: web
+  - type: static
     name: finvest-dashboard
     runtime: static
-    plan: free
-    region: oregon
     rootDir: dashboard
     buildCommand: CI=false npm install && CI=false npm run build
     staticPublishPath: build
@@ -62,12 +52,8 @@ services:
         destination: /index.html
     envVars:
       - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: finvest-backend
-          property: host
+        sync: false
       - key: REACT_APP_FRONTEND_URL
-        fromService:
-          type: web
-          name: finvest-frontend
-          property: host
+        sync: false
+      - key: REACT_APP_RAZORPAY_KEY_ID
+        sync: false
