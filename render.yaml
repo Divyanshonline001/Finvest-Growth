@@ -23,7 +23,7 @@ services:
         sync: false
 
   # 2. Frontend Landing Page (Static Site)
-  - type: static
+  - type: web
     name: finvest-frontend
     runtime: static
     rootDir: frontend
@@ -40,7 +40,7 @@ services:
         sync: false
 
   # 3. Trading Dashboard (Static Site)
-  - type: static
+  - type: web
     name: finvest-dashboard
     runtime: static
     rootDir: dashboard
