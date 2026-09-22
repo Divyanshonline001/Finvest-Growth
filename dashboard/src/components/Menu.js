@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
+
+const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000";
 
 const Menu = ({ username }) => {
   const [selectedMenu, setSelectedMenu] = useState(0);
@@ -15,12 +17,14 @@ const Menu = ({ username }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:4000/logout", {}, { withCredentials: true });
-      window.location.href = "http://localhost:3000/signup";
+      await api.post("/logout", {});
+      localStorage.removeItem("token");
+      window.location.href = `${FRONTEND_URL}/signup`;
     } catch (error) {
       console.error("Logout failed", error);
+      localStorage.removeItem("token");
       document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      window.location.href = "http://localhost:3000/signup";
+      window.location.href = `${FRONTEND_URL}/signup`;
     }
   };
 

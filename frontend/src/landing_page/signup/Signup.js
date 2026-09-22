@@ -27,21 +27,27 @@ const Signup = () => {
       position: "bottom-right",
     });
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+  const DASHBOARD_URL = process.env.REACT_APP_DASHBOARD_URL || "http://localhost:3001";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/signup",
+        `${API_URL}/signup`,
         {
           ...inputValue,
         },
         { withCredentials: true }
       );
-      const { success, message } = data;
+      const { success, message, token } = data;
       if (success) {
+        if (token) {
+          localStorage.setItem("token", token);
+        }
         handleSuccess(message);
         setTimeout(() => {
-          window.location.href = "http://localhost:3001";
+          window.location.href = DASHBOARD_URL;
         }, 1000);
       } else {
         handleError(message);

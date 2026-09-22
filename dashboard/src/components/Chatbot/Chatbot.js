@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from "../../api";
 import "./Chatbot.css";
 
 const Chatbot = () => {
@@ -23,8 +23,8 @@ const Chatbot = () => {
   ];
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/chatbot/status", { withCredentials: true })
+    api
+      .get("/chatbot/status")
       .then((res) => {
         setIsGeminiActive(res.data.geminiActive);
       })
@@ -35,7 +35,7 @@ const Chatbot = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, isTyping]);
+  }, [messages]);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -51,10 +51,9 @@ const Chatbot = () => {
     setIsTyping(true);
 
     try {
-      const { data } = await axios.post(
-        "http://localhost:4000/chatbot",
-        { message: text },
-        { withCredentials: true }
+      const { data } = await api.post(
+        "/chatbot",
+        { message: text }
       );
       setMessages((prev) => [...prev, { sender: "bot", text: data.reply }]);
     } catch (error) {

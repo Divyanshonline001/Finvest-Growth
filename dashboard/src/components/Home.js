@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
 import Chatbot from "./Chatbot/Chatbot";
@@ -11,10 +11,9 @@ const Home = () => {
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const { data } = await axios.post(
-          "http://localhost:4000",
-          {},
-          { withCredentials: true }
+        const { data } = await api.post(
+          "/",
+          {}
         );
         const { status, user } = data;
         if (status && user) {

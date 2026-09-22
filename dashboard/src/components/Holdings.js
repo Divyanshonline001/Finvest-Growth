@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import api from '../api';
 import { VerticleChart } from "./VerticleChart";
 
 const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:4000/allHoldings", { withCredentials: true }).then((res) => {
+    api.get("/allHoldings").then((res) => {
       setAllHoldings(res.data);
     });
   }, []);

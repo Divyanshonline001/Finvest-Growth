@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
@@ -41,14 +41,13 @@ const BuyActionWindow = ({ uid, price = 0 }) => {
     try {
       await loadRazorpayScript();
 
-      const orderResponse = await axios.post(
-        "http://localhost:4000/razorpay/create-order",
+      const orderResponse = await api.post(
+        "/razorpay/create-order",
         {
           name: uid,
           qty,
           price: prc,
-        },
-        { withCredentials: true }
+        }
       );
 
       const orderData = orderResponse.data;
@@ -63,8 +62,8 @@ const BuyActionWindow = ({ uid, price = 0 }) => {
         order_id: orderData.orderId,
         handler: async function (paymentResponse) {
           try {
-            const verifyRes = await axios.post(
-              "http://localhost:4000/razorpay/verify-payment",
+            const verifyRes = await api.post(
+              "/razorpay/verify-payment",
               {
                 razorpay_order_id: paymentResponse.razorpay_order_id,
                 razorpay_payment_id: paymentResponse.razorpay_payment_id,
@@ -73,8 +72,7 @@ const BuyActionWindow = ({ uid, price = 0 }) => {
                 qty,
                 price: prc,
                 mode: "BUY",
-              },
-              { withCredentials: true }
+              }
             );
 
             if (verifyRes.data.success) {
