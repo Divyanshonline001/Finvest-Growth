@@ -97,7 +97,7 @@ const Login = () => {
       <div className="row justify-content-center align-items-center w-100 mx-auto">
         <div className="col-12 col-md-6 text-center p-3">
           <img 
-            src="media/signup.png" 
+            src="media/SignUp copy.png"
             alt="Login Illustration" 
             className="auth-image"
           />
